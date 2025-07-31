@@ -1,9 +1,22 @@
 "use client";
 import { useProducts } from "@lib/queries";
+import Image from "next/image";
+
+interface Product {
+  _id: string;
+  title: string;
+  description?: string;
+  price?: number;
+  image?: string;
+  affiliateLink?: string;
+  category?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export default function Home() {
   const { data: products, isLoading, isError } = useProducts();
-  function ProductCard({ product, style }: { product: any; style?: React.CSSProperties }) {
+  function ProductCard({ product, style }: { product: Product; style?: React.CSSProperties }) {
     return (
       <div
         style={style}
@@ -14,7 +27,7 @@ export default function Home() {
       >
         <div className="flex-1 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-2">
           {product.image ? (
-            <img src={product.image} alt={product.title} className="object-cover w-full h-full" />
+            <Image width={100} height={100} src={product.image} alt={product.title} className="object-cover w-full h-full" />
           ) : (
             <div className="text-gray-400 text-sm">No image</div>
           )}
@@ -25,6 +38,15 @@ export default function Home() {
       </div>
     );
   }
+
+  if (isLoading) {
+    return <div className="text-center text-gray-500">Loading products...</div>;
+  }
+
+  if (isError) {
+    return <div className="text-center text-red-500">Failed to load products.</div>;
+  }
+
   return (
     <div className="font-sans min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-[#18181b] dark:to-[#23272f] p-6 sm:p-12 flex flex-col items-center">
       <header className="mb-10 text-center">
@@ -80,7 +102,7 @@ export default function Home() {
                     <ProductCard
                       key={products[i]._id}
                       product={products[i]}
-                      style={{ backgroundColor: '#000000',  height: '17vh' }}
+                      style={{ backgroundColor: '#000000', height: '17vh' }}
                     />
                   ) : null
                 )}

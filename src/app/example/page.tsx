@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 interface ApiResponse {
     success: boolean;
     message: string;
-    error?: any;
+    error?: string;
 }
 
 const fetchTestApi = async (): Promise<ApiResponse> => {

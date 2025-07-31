@@ -2,7 +2,7 @@ import { connectToDB } from "@lib/db/connect";
 import { Product } from "@lib/db/models/Product";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
         await connectToDB();
 
