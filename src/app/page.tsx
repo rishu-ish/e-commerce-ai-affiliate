@@ -3,6 +3,28 @@ import { useProducts } from "@lib/queries";
 
 export default function Home() {
   const { data: products, isLoading, isError } = useProducts();
+  function ProductCard({ product, style }: { product: any; style?: React.CSSProperties }) {
+    return (
+      <div
+        style={style}
+        className="rounded-xl overflow-hidden shadow-md bg-white dark:bg-[#23272f] p-2 flex flex-col justify-between"
+        onClick={() => {
+          window.open(product.affiliateLink);
+        }}
+      >
+        <div className="flex-1 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-2">
+          {product.image ? (
+            <img src={product.image} alt={product.title} className="object-cover w-full h-full" />
+          ) : (
+            <div className="text-gray-400 text-sm">No image</div>
+          )}
+        </div>
+        <h2 className="text-xs font-semibold text-gray-900 dark:text-white truncate">
+          {product.title}
+        </h2>
+      </div>
+    );
+  }
   return (
     <div className="font-sans min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-[#18181b] dark:to-[#23272f] p-6 sm:p-12 flex flex-col items-center">
       <header className="mb-10 text-center">
@@ -20,77 +42,50 @@ export default function Home() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <div
-                key={product._id}
-                className="bg-white dark:bg-[#23272f] rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 flex flex-col"
-              >
-                {/* Product Image */}
-                <div className="relative p-4 pb-0">
-                  <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden flex items-center justify-center">
-                    {product.image ? (
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Product Info */}
-                <div className="p-4 pt-2 flex flex-col flex-grow">
-                  {/* Title */}
-                  <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
-                    {product.title}
-                  </h2>
-
-                  {/* Description */}
-                  {product.description && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 line-clamp-2">
-                      {product.description}
-                    </p>
+          <div className="mt-10 flex justify-center items-center">
+            <div
+              style={{
+                backgroundColor: '#333333',
+                width: '70vw',
+                padding: '1vh',
+                borderRadius: '1vh',
+              }}
+              className="flex flex-col gap-3"
+            >
+              <div className="flex justify-center gap-3">
+                {products && products[3] && (
+                  <ProductCard
+                    product={products[3]}
+                    style={{ backgroundColor: '#000000', width: '92vw', height: '30vh' }}
+                  />
+                )}
+                <div className="flex flex-col gap-3">
+                  {products && products[1] && (
+                    <ProductCard
+                      product={products[1]}
+                      style={{ backgroundColor: '#000000', width: '16vw', height: '14vh' }}
+                    />
                   )}
-
-                  {/* Price */}
-                  {typeof product.price === 'number' && (
-                    <div className="mb-3">
-                      <span className="text-lg font-bold text-gray-900 dark:text-white">
-                        ₹{product.price.toFixed(2)}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Category */}
-                  {product.category && (
-                    <div className="mb-3">
-                      <span className="text-xs px-2 py-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                        {product.category}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Action Button */}
-                  {product.affiliateLink && (
-                    <a
-                      href={product.affiliateLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-center text-sm"
-                    >
-                      View Deal
-                    </a>
+                  {products && products[2] && (
+                    <ProductCard
+                      product={products[2]}
+                      style={{ backgroundColor: '#000000', width: '16vw', height: '15vh' }}
+                    />
                   )}
                 </div>
               </div>
-            ))}
+              <div className="flex gap-3">
+                {[1, 2, 0].map((i) =>
+                  products && products[i] ? (
+                    <ProductCard
+                      key={products[i]._id}
+                      product={products[i]}
+                      style={{ backgroundColor: '#000000',  height: '17vh' }}
+                    />
+                  ) : null
+                )}
+              </div>
+            </div>
           </div>
         )}
       </main>
